@@ -84,8 +84,8 @@ WARIO SYNTH includes an embeddable widget at **`/embed`**:
 ## Tech Stack
 
 - **Frontend**: TypeScript, Vite, Web Audio API
-- **Backend**: Express, Node.js
-- **Deployment**: Vercel
+- **Backend**: Cloudflare Worker (`worker/`): MIDI fetch proxy with SSRF checks, share links in Workers KV
+- **Deployment**: Cloudflare Workers with static assets (`npm run deploy`). `server/` is the old Express backend, kept for local dev and Vercel rollback
 - **Built with**: Claude Code
 
 ## Credits

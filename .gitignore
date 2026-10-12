@@ -38,3 +38,6 @@ logs/
 
 # Backend runtime cache (downloaded MIDI files)
 server/cache/
+
+# Wrangler local state
+.wrangler/

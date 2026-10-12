@@ -1,0 +1,25 @@
+// Cloudflare Worker for wario.style: serves the Vite build (dist/) and the
+// small API that used to run as the Express function on Vercel.
+// Deploy: npm run deploy
+{
+  "name": "motif",
+  "account_id": "ff7e84841bce6f90ee9479e0cb31b2ca",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-05-28",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    // Unknown paths get index.html, as the Vercel catch-all route did.
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/s/*", "/health", "/v2", "/v2/", "/v2.html"]
+  },
+  "kv_namespaces": [
+    // Short share links (share:<code>), moved from Redis Labs.
+    { "binding": "SHARES", "id": "37496a5d13214ddd88a7d464b1d455ac" }
+  ],
+  "observability": { "enabled": true }
+  // Added at cutover, after wario.style moves to Cloudflare. The bare domain
+  // goes to the redirect Worker in wrangler.apex.jsonc.
+  // "routes": [{ "pattern": "www.wario.style", "custom_domain": true }]
+}

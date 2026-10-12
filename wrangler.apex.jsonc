@@ -1,0 +1,9 @@
+// Bare-domain redirect for wario.style. Deploy: npx wrangler deploy -c wrangler.apex.jsonc
+{
+  "name": "motif-apex",
+  "account_id": "ff7e84841bce6f90ee9479e0cb31b2ca",
+  "main": "worker/apex.ts",
+  "compatibility_date": "2026-05-28"
+  // Added at cutover:
+  // "routes": [{ "pattern": "wario.style", "custom_domain": true }]
+}
