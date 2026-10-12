@@ -10,8 +10,8 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    // Unknown paths get index.html, as the Vercel catch-all route did.
-    "not_found_handling": "single-page-application",
+    // Unknown pages show the themed 404, then offer a timed warp home.
+    "not_found_handling": "404-page",
     "run_worker_first": [
       "/api/*", "/s/*", "/health", "/v2", "/v2/",
       "/v2.html", "/index.html", "/embed.html", "/play.html", "/models.html",
@@ -22,8 +22,7 @@
     // Short share links (share:<code>), moved from Redis Labs.
     { "binding": "SHARES", "id": "37496a5d13214ddd88a7d464b1d455ac" }
   ],
-  "observability": { "enabled": true }
-  // Added at cutover, after wario.style moves to Cloudflare. The bare domain
-  // goes to the redirect Worker in wrangler.apex.jsonc.
-  // "routes": [{ "pattern": "www.wario.style", "custom_domain": true }]
+  "observability": { "enabled": true },
+  // The bare domain goes to the redirect Worker in wrangler.apex.jsonc.
+  "routes": [{ "pattern": "www.wario.style", "custom_domain": true }]
 }

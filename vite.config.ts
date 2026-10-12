@@ -16,6 +16,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        not_found: resolve(__dirname, '404.html'),
         // Existing pages (keep for backward compatibility)
         embed: resolve(__dirname, 'embed.html'),
         models: resolve(__dirname, 'models.html'),
