@@ -1,6 +1,6 @@
 // wario.style on Cloudflare Workers. Static files come from dist/ through the
 // ASSETS binding; this script handles the routes the Express server handled
-// on Vercel (/api/*, /s/:code, /health) plus the /v2 redirect. The bare
+// on Vercel (/api/*, /s/:code, /health) plus the /v2 and .html redirects. The bare
 // domain redirect lives in worker/apex.ts.
 // server/src/server.ts stays in the repo for local dev and Vercel rollback.
 
@@ -34,6 +34,14 @@ export default {
     // Old V2 links open the unified player with the same song.
     if (path === '/v2' || path === '/v2/' || path === '/v2.html') {
       return Response.redirect(`${url.origin}/${url.search}`, 301);
+    }
+
+    // Vercel served /page.html and /page as duplicates, and Google indexed
+    // both. Send the .html form to the clean URL with a permanent redirect
+    // (the assets layer would use a 307).
+    if (path.endsWith('.html')) {
+      const clean = path === '/index.html' ? '/' : path.slice(0, -'.html'.length);
+      return Response.redirect(`${url.origin}${clean}${url.search}`, 301);
     }
 
     if (request.method === 'OPTIONS' && (path.startsWith('/api/') || path === '/health' || path.startsWith('/s/'))) {
