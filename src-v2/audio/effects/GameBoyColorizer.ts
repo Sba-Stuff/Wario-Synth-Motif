@@ -51,7 +51,6 @@ export class GameBoyColorizer {
   private waveshaper: WaveShaperNode;
   private limiter: DynamicsCompressorNode;
   
-  private isInitialized = false;
   
   constructor(audioContext: AudioContext, config: Partial<ColorizerConfig> = {}) {
     this.audioContext = audioContext;
@@ -101,7 +100,6 @@ export class GameBoyColorizer {
     this.waveshaper.connect(this.limiter);
     this.limiter.connect(this.outputGain);
     
-    this.isInitialized = true;
   }
   
   /**
@@ -155,10 +153,9 @@ export class GameBoyColorizer {
   /**
    * Create a saturation curve for the waveshaper.
    */
-  private createSaturationCurve(amount: number): Float32Array {
+  private createSaturationCurve(amount: number): Float32Array<ArrayBuffer> {
     const samples = 44100;
     const curve = new Float32Array(samples);
-    const deg = Math.PI / 180;
     
     for (let i = 0; i < samples; i++) {
       const x = (i * 2) / samples - 1;

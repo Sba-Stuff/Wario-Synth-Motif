@@ -257,7 +257,7 @@ export class TrackAnalyzer {
    * Determine the musical role of the track.
    */
   private detectRole(
-    notes: MIDINote[],
+    _notes: MIDINote[],
     range: { min: number; max: number; avg: number },
     isDrums: boolean,
     density: number,

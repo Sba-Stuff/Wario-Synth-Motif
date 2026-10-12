@@ -56,12 +56,8 @@
     <div class="container">
         <div class="hero">
             <div class="hero-top">
-                <h1>WARIO SYNTH <span class="version-tag">v1.7.1</span></h1>
+                <h1>WARIO SYNTH </h1>
                 <button id="faqBtnTop" class="faq-link" type="button">FAQ</button>
-            </div>
-            <div class="engine-tabs">
-                <a href="/" class="engine-tab active">v1</a>
-                <a id="v2Tab" href="/v2.html" class="engine-tab">v2 beta</a>
             </div>
         </div>
 
@@ -103,7 +99,7 @@
 
 
                 <div class="selected-actions" id="preGenActions">
-                    <button id="motifBtn" class="primary" disabled>Generate music</button>
+                    <button id="motifBtn" class="primary" disabled>Play 8-bit version</button>
                 </div>
 
                 <div class="selected-support" id="preGenSupport">
@@ -142,8 +138,7 @@
                     </div>
 
                     <div style="margin-top: 14px; display: flex; gap: 12px; flex-wrap: wrap;">
-                        <button id="saveAudioBtn" type="button" disabled>Save Audio</button>
-                        <button id="saveMidiBtn" type="button" disabled>Save MIDI</button>
+                        <button id="saveAudioBtn" type="button" disabled>Save 30s WAV</button>
                         <button id="copyLinkBtn" type="button" disabled>Copy link</button>
                         <button id="shareToXBtn" type="button" disabled>Share to X</button>
                     </div>
@@ -169,8 +164,9 @@
         <details>
             <summary>Version History</summary>
             <div class="version-content">
+                <div class="version-item"><strong>2.0</strong> — One Wario Synth: the new engine with MIDI uploads, original previews, audio export and sharing.</div>
                 <div class="version-item">
-                    <strong>How it works:</strong> Search a song or upload your own MIDI (.mid/.midi). The Wario Synthesis Engine analyses the file, maps melody/bass/chords to Game Boy channels, and resynthesises it with Web Audio oscillators. All processing runs client-side in your browser — no server-side audio generation. After Generate, you can save the result as WAV or MIDI.
+                    <strong>How it works:</strong> Search a song or upload your own MIDI (.mid/.midi). The Wario Synthesis Engine analyses the file, maps melody/bass/chords to Game Boy channels, and resynthesises it with Web Audio oscillators. All processing runs client-side in your browser — no server-side audio generation. Save up to 30 seconds as WAV.
                 </div>
                 <div class="version-divider"></div>
                 <div class="version-item">
@@ -235,23 +231,20 @@
                 <div class="faq-grid">
                     <div class="faq-item">
                         <h4>How it works</h4>
-                        <p>Search a song or upload your own MIDI, pick a source, hit Generate. The Wario Synthesis Engine analyses the MIDI and resynthesises it with Web Audio oscillators into a chunky 8-bit chiptune. (Honestly it's closer to a SNES than a Game Boy — the <strong>v2 beta</strong> tab goes for the real Game Boy chip.) All processing runs in your browser.</p>
+                        <p>Search a song or upload your own MIDI, choose a source, then press Play 8-bit version. Pulse, wave and noise synthesis gives it a Game Boy-inspired sound. Processing runs in your browser.</p>
                     </div>
-                    <div class="faq-item">
-                        <h4>What's the "v2 beta" tab?</h4>
-                        <p>An experimental engine that goes for the actual Game Boy sound chip (the Sharp LR35902): real pulse, wave and noise channels. It's a rough work in progress, so v1 stays the default — but try it from the <strong>v2 beta</strong> tab up top.</p>
-                    </div>
+
                     <div class="faq-item">
                         <h4>Can I upload my own MIDI?</h4>
                         <p>Yes. Use <strong>Upload MIDI</strong> next to Search and pick a <code>.mid</code> or <code>.midi</code> file from your device. It is parsed locally in your browser — nothing is uploaded to our servers.</p>
                     </div>
                     <div class="faq-item">
                         <h4>Can I save the generated version?</h4>
-                        <p>After Generate finishes, use <strong>Save Audio</strong> (WAV) or <strong>Save MIDI</strong> to download the Game Boy-style result.</p>
+                        <p>After playback starts, use Save 30s WAV to download up to 30 seconds of the 8-bit version.</p>
                     </div>
                     <div class="faq-item">
                         <h4>Can I share my result?</h4>
-                        <p>Yes — if you used <strong>Search</strong> and picked an online MIDI source, <strong>Copy link</strong> and <strong>Share to X</strong> appear after Generate. They create a link others can open at wario.style/play.</p>
+                        <p>Yes — if you used <strong>Search</strong> and picked an online MIDI source, <strong>Copy link</strong> and <strong>Share to X</strong> appear after playback starts. They link directly to your song at wario.style.</p>
                     </div>
                     <div class="faq-item">
                         <h4>Why can't I share an uploaded MIDI?</h4>

@@ -13,7 +13,7 @@
 import { PulseChannel } from './PulseChannel';
 import { WaveChannel } from './WaveChannel';
 import { NoiseChannel } from './NoiseChannel';
-import { GameBoyColorizer, type ColorizerConfig } from '../effects/GameBoyColorizer';
+import { GameBoyColorizer } from '../effects/GameBoyColorizer';
 import { 
   DEFAULT_V2_CONFIG,
   type ChannelId, 
@@ -296,7 +296,7 @@ export class GameBoyAPU {
   /**
    * Track an audio node for stop functionality.
    */
-  private trackNode(node: OscillatorNode | AudioBufferSourceNode, stopTime: number): void {
+  private trackNode(node: OscillatorNode | AudioBufferSourceNode, _stopTime: number): void {
     this.activeNodes.add(node);
     
     // Auto-remove when the node ends naturally

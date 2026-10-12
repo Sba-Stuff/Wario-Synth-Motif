@@ -1,4 +1,4 @@
-import { MotifEngine } from './core/MotifEngine';
+import { WarioPlayer } from './core/WarioPlayer';
 import { MIDIService } from './services/MIDIService';
 import { BITMIDI_SEARCH_UNAVAILABLE_MESSAGE } from './services/BitMidiClient';
 import { MIDIParser } from './midi/MIDIParser';
@@ -13,7 +13,7 @@ type CurrentSource =
 class MotifApp {
   private static readonly MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
   private searchRequestId = 0;
-  private motifEngine: MotifEngine;
+  private motifEngine: WarioPlayer;
   private midiService: MIDIService;
 
   // Preview player (lazily created for iOS compatibility)
@@ -64,7 +64,6 @@ class MotifApp {
   private copyLinkBtn!: HTMLButtonElement;
   private shareToXBtn!: HTMLButtonElement;
   private saveAudioBtn!: HTMLButtonElement;
-  private saveMidiBtn!: HTMLButtonElement;
   private shareUploadNotice!: HTMLElement;
   private shareFallback!: HTMLElement;
   private shareFallbackInput!: HTMLInputElement;
@@ -83,11 +82,11 @@ class MotifApp {
 
   private searchResults: any[] = [];
   private selectedResultIndex = 0;
-  private currentMIDI: { events: NoteEvent[], metadata: any } | null = null;
+  private currentMIDI: { buffer: ArrayBuffer, events: NoteEvent[], metadata: any } | null = null;
   private currentSource: CurrentSource | null = null;
 
   constructor() {
-    this.motifEngine = new MotifEngine();
+    this.motifEngine = new WarioPlayer();
     this.midiService = new MIDIService();
     // soundfontPlayer created lazily on first play for iOS compatibility
 
@@ -97,19 +96,24 @@ class MotifApp {
     // Always play at 100%
     this.motifEngine.setVolume(1);
 
-    // Carry a song over from a ?song= link (e.g. the v2 beta tab).
+    // Load current share links and older search-prefill links.
     this.initFromQuery();
   }
 
   private initFromQuery(): void {
-    try {
-      const q = new URLSearchParams(window.location.search).get('song');
-      if (q) {
-        this.songInput.value = q;
-        void this.handleSearch();
-      }
-    } catch {
-      // ignore
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const u = params.get('u');
+    if ((id && /^\d+$/.test(id)) || u) {
+      this.searchResults = [{
+        title: params.get('title') || 'Shared song',
+        source: id ? 'bitmidi' : 'remote',
+        midiUrl: id ? `https://bitmidi.com/uploads/${id}.mid` : u,
+      }];
+      void this.selectResult(0);
+    } else {
+      const q = params.get('q') || params.get('song');
+      if (q) { this.songInput.value = q; void this.handleSearch(); }
     }
   }
 
@@ -158,7 +162,6 @@ class MotifApp {
     this.copyLinkBtn = document.getElementById('copyLinkBtn') as HTMLButtonElement;
     this.shareToXBtn = document.getElementById('shareToXBtn') as HTMLButtonElement;
     this.saveAudioBtn = document.getElementById('saveAudioBtn') as HTMLButtonElement;
-    this.saveMidiBtn = document.getElementById('saveMidiBtn') as HTMLButtonElement;
     this.shareUploadNotice = document.getElementById('shareUploadNotice')!;
     this.shareFallback = document.getElementById('shareFallback')!;
     this.shareFallbackInput = document.getElementById('shareFallbackInput') as HTMLInputElement;
@@ -222,7 +225,6 @@ class MotifApp {
     this.copyLinkBtn.addEventListener('click', () => void this.handleCopyLink());
     this.shareToXBtn.addEventListener('click', () => void this.handleShareToX());
     this.saveAudioBtn.addEventListener('click', () => void this.handleSaveAudio());
-    this.saveMidiBtn.addEventListener('click', () => void this.handleSaveMidi());
 
     // Embed snippet copy (may be disabled / not-live)
     this.copyEmbedBtn?.addEventListener('click', () => void this.copyEmbedSnippet());
@@ -255,6 +257,8 @@ class MotifApp {
   }
 
   private resetToNewSearch(): void {
+    ++this.searchRequestId;
+    this.searchBtn.disabled = false;
     // Stop all audio and return to the search workbench.
     this.stopPreview();
     this.handleMotifStop();
@@ -353,8 +357,11 @@ class MotifApp {
       return;
     }
 
-    // Stop any playing Motif audio
+    // Stop all playback before starting another search.
     this.handleMotifStop();
+    this.stopPreview();
+    this.currentMIDI = null;
+    this.hasGenerated = false;
 
     this.updateStatus('Searching…');
     console.log('[MotifApp] Starting search for:', songName);
@@ -456,7 +463,8 @@ class MotifApp {
       this.stopPreview();
       this.hasGenerated = false;
       this.disablePlayerControls();
-      this.currentMIDI = { events, metadata: { ...metadata, duration: actualDuration } };
+      this.motifResumeProgress = 0;
+      this.currentMIDI = { buffer: midiBuffer, events, metadata: { ...metadata, duration: actualDuration } };
       this.currentSource = { type: 'upload', fileName: file.name };
       if (this.embedSection) this.embedSection.style.display = 'none';
       if (this.embedCodeEl) this.embedCodeEl.textContent = '';
@@ -531,6 +539,8 @@ class MotifApp {
     this.stopPreview();
     this.hasGenerated = false;
 
+    const requestId = ++this.searchRequestId;
+    this.searchBtn.disabled = false;
     this.selectedResultIndex = index;
     const result = this.searchResults[index];
 
@@ -546,6 +556,7 @@ class MotifApp {
     try {
       // Fetch and parse MIDI
       const midiBuffer = await this.midiService.fetchMIDI(result.midiUrl);
+      if (requestId !== this.searchRequestId) return;
       if (!midiBuffer) {
         throw new Error('Failed to fetch MIDI file');
       }
@@ -560,7 +571,8 @@ class MotifApp {
         actualDuration = Math.max(...events.map(e => e.time + e.duration));
       }
 
-      this.currentMIDI = { events, metadata: { ...metadata, duration: actualDuration } };
+      this.motifResumeProgress = 0;
+      this.currentMIDI = { buffer: midiBuffer, events, metadata: { ...metadata, duration: actualDuration } };
       this.currentSource = { type: 'remote', resultIndex: index };
 
       // Update UI
@@ -569,7 +581,6 @@ class MotifApp {
       this.selectedMeta.textContent = `Source: ${this.formatSourceLabel(result.source)}`;
 
       this.updateEmbedSnippet(result.title);
-      this.updateV2Tab(result);
       this.updateIOSAudioBanner();
 
       this.playerSection.classList.add('visible');
@@ -587,6 +598,7 @@ class MotifApp {
       }
 
     } catch (error) {
+      if (requestId !== this.searchRequestId) return;
       this.updateStatus(`Load error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -630,11 +642,14 @@ class MotifApp {
       return;
     }
 
+    const requestId = this.searchRequestId;
+    const buffer = this.currentMIDI.buffer;
     try {
       // Audio exclusivity
       this.stopPreview();
       // Best-effort: ensure iOS audio is unlocked from this user gesture.
       await unlockAudio();
+      if (requestId !== this.searchRequestId) return;
       this.updateIOSAudioBanner();
 
       // Preserve scroll position during state change
@@ -642,15 +657,17 @@ class MotifApp {
       // Once generation starts: lock into generated experience mode.
       this.setState('generated');
       window.scrollTo(0, scrollY);
-      this.updateStatus('Generating…');
+      this.updateStatus('Preparing 8-bit music…');
       this.motifBtn.disabled = true;
       this.playPauseBtn.disabled = true;
 
-      // Generate a variation using the procedural role-mapping mode
-      await this.motifEngine.generateFromMIDI(this.currentMIDI.events, 'procedural');
+      // Prepare the Game Boy arrangement from the original MIDI tracks.
+      await this.motifEngine.prepare(buffer);
+      if (requestId !== this.searchRequestId) return;
       this.motifEngine.setVolume(0.8);
 
       await this.motifEngine.play();
+      if (requestId !== this.searchRequestId) { this.motifEngine.stop(); return; }
 
       this.isMotifPlaying = true;
       this.playPauseBtn.disabled = false;
@@ -673,6 +690,7 @@ class MotifApp {
       this.setState('generated');
       window.scrollTo(0, scrollYEnd);
     } catch (error) {
+      if (requestId !== this.searchRequestId) return;
       this.updateStatus(`Motif error: ${error instanceof Error ? error.message : 'Unknown error'}`);
       this.motifBtn.disabled = false;
       this.playPauseBtn.disabled = false;
@@ -792,7 +810,6 @@ class MotifApp {
   private disablePlayerControls(): void {
     this.motifBtn.disabled = true;
     this.saveAudioBtn.disabled = true;
-    this.saveMidiBtn.disabled = true;
     this.copyLinkBtn.disabled = true;
     this.shareToXBtn.disabled = true;
     this.previewBtn.disabled = true;
@@ -836,30 +853,14 @@ class MotifApp {
     this.saveAudioBtn.disabled = true;
     this.updateStatus('Exporting audio…');
     try {
-      const bytes = await this.motifEngine.exportMotifWAVBytes(44100);
+      const bytes = await this.motifEngine.exportMotifWAVBytes();
       const base = this.sanitizeFileBase(this.getActiveTitle());
       this.triggerDownload(bytes, `${base}-motif.wav`, 'audio/wav');
-      this.updateStatus('Saved converted audio (.wav).');
+      this.updateStatus('Saved up to 30 seconds of audio (.wav).');
     } catch (error) {
       this.updateStatus(`Export error: ${error instanceof Error ? error.message : 'Audio export failed.'}`);
     } finally {
       this.saveAudioBtn.disabled = !this.hasGenerated;
-    }
-  }
-
-  private async handleSaveMidi(): Promise<void> {
-    if (!this.hasGenerated || !this.motifEngine.hasGeneratedContent()) return;
-    this.saveMidiBtn.disabled = true;
-    this.updateStatus('Exporting MIDI…');
-    try {
-      const bytes = this.motifEngine.exportMotifMIDIBytes();
-      const base = this.sanitizeFileBase(this.getActiveTitle());
-      this.triggerDownload(bytes, `${base}-motif.mid`, 'audio/midi');
-      this.updateStatus('Saved converted MIDI (.mid).');
-    } catch (error) {
-      this.updateStatus(`Export error: ${error instanceof Error ? error.message : 'MIDI export failed.'}`);
-    } finally {
-      this.saveMidiBtn.disabled = !this.hasGenerated;
     }
   }
 
@@ -872,45 +873,7 @@ class MotifApp {
     const result = this.searchResults[this.selectedResultIndex];
     if (!result?.midiUrl) return;
 
-    const title = result.title || '';
-
-    // Try to get a short link with dynamic OG tags
-    let shareUrl: string | null = null;
-    try {
-      let payload: any = null;
-      if (result.source === 'bitmidi') {
-        const m = String(result.midiUrl).match(/\/uploads\/(\d+)\.mid/i);
-        if (m?.[1]) payload = { src: 'bitmidi', id: m[1], title };
-      }
-      if (!payload) payload = { u: result.midiUrl, title };
-
-      const resp = await fetch('/api/share', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (resp.ok) {
-        const data = await resp.json();
-        if (data?.url) shareUrl = `${window.location.origin}${data.url}`;
-      }
-    } catch {
-      // Fall through to long URL
-    }
-
-    // Fallback: direct /play link
-    if (!shareUrl) {
-      const encodedTitle = encodeURIComponent(title);
-      if (result.source === 'bitmidi') {
-        const m = String(result.midiUrl).match(/\/uploads\/(\d+)\.mid/i);
-        if (m?.[1]) {
-          shareUrl = `${window.location.origin}/play?src=bitmidi&id=${encodeURIComponent(m[1])}&title=${encodedTitle}`;
-        } else {
-          shareUrl = `${window.location.origin}/play?u=${encodeURIComponent(result.midiUrl)}&title=${encodedTitle}`;
-        }
-      } else {
-        shareUrl = `${window.location.origin}/play?u=${encodeURIComponent(result.midiUrl)}&title=${encodedTitle}`;
-      }
-    }
+    const shareUrl = this.buildShareUrl(result);
 
     // Try to copy to clipboard
     let copied = false;
@@ -979,32 +942,7 @@ class MotifApp {
     // We'll navigate it after getting the share URL
     const popup = window.open('about:blank', '_blank');
 
-    // Get share URL (try short link first)
-    let shareUrl: string | null = null;
-    try {
-      let payload: any = null;
-      if (result.source === 'bitmidi') {
-        const m = String(result.midiUrl).match(/\/uploads\/(\d+)\.mid/i);
-        if (m?.[1]) payload = { src: 'bitmidi', id: m[1], title: result.title };
-      }
-      if (!payload) payload = { u: result.midiUrl, title: result.title };
-
-      const resp = await fetch('/api/share', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (resp.ok) {
-        const data = await resp.json();
-        if (data?.url) shareUrl = `${window.location.origin}${data.url}`;
-      }
-    } catch {
-      // Fall through
-    }
-
-    if (!shareUrl) {
-      shareUrl = window.location.href;
-    }
+    const shareUrl = this.buildShareUrl(result);
 
     // Compose tweet text
     const tweetText = `I made a Game Boy version of ${title}\n\nUsing @b1rdmania's Wario Synthesis Midi Engine\n\nCheck it out here`;
@@ -1041,7 +979,7 @@ class MotifApp {
 
     // New search button only after generation
     if (this.newSearchBtn) {
-      this.newSearchBtn.style.display = state === 'generated' ? 'inline-block' : 'none';
+      this.newSearchBtn.style.display = hasSelection ? 'inline-block' : 'none';
     }
 
     // Dim results when selected/generated, but keep them interactive
@@ -1052,14 +990,13 @@ class MotifApp {
     // Selected pre-generation content
     const showPreGen = state === 'selected';
     this.preGenActions.style.display = showPreGen ? 'block' : 'none';
-    this.preGenSupport.style.display = showPreGen ? 'flex' : 'none';
+    this.preGenSupport.style.display = hasSelection ? 'flex' : 'none';
 
     // Generated artifact content
     const showGenerated = state === 'generated';
     this.generatedBlock.style.display = showGenerated ? 'block' : 'none';
     this.playPauseBtn.disabled = !showGenerated || !this.hasGenerated;
     this.saveAudioBtn.disabled = !showGenerated || !this.hasGenerated;
-    this.saveMidiBtn.disabled = !showGenerated || !this.hasGenerated;
     this.playPauseBtn.textContent = this.isMotifPlaying ? 'Pause' : 'Play';
 
     // iOS banner only before generation
@@ -1093,26 +1030,17 @@ class MotifApp {
       this.isMotifPlaying = true;
       this.playPauseBtn.textContent = 'Pause';
       this.startMotifProgressUpdates();
-    } catch {
-      // ignore
+    } catch (error) {
+      this.updateStatus(`Playback error: ${error instanceof Error ? error.message : 'Please try again.'}`);
     }
   }
 
-  // Point the "v2 beta" tab at the currently selected song so switching
-  // engines carries the track across (by BitMidi id, falling back to a query).
-  private updateV2Tab(result: any): void {
-    const tab = document.getElementById('v2Tab') as HTMLAnchorElement | null;
-    if (!tab) return;
-    const title = encodeURIComponent(result?.title || '');
-    let href = '/v2.html';
-    if (result?.source === 'bitmidi') {
-      const m = String(result.midiUrl || '').match(/\/uploads\/(\d+)\.mid/i);
-      if (m?.[1]) href = `/v2.html?id=${m[1]}&title=${title}`;
-    }
-    if (href === '/v2.html' && result?.title) {
-      href = `/v2.html?q=${title}`;
-    }
-    tab.href = href;
+  private buildShareUrl(result: { midiUrl: string; title: string }): string {
+    const url = new URL('/', window.location.origin);
+    const id = result.midiUrl.match(/bitmidi\.com\/uploads\/(\d+)\.mid/i)?.[1];
+    url.searchParams.set(id ? 'id' : 'u', id || result.midiUrl);
+    url.searchParams.set('title', result.title || '');
+    return url.href;
   }
 
   private updateEmbedSnippet(songTitle: string): void {

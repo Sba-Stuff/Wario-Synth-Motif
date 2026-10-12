@@ -15,8 +15,7 @@
  * 6. Arpeggio Insertion - Turn static chords into motion
  */
 
-import type { ChannelNote, ChannelId, ChannelAssignment, TrackAnalysis } from '../../types';
-import type { ArpNote } from '../../types';
+import type { ChannelNote, ChannelId, ChannelAssignment } from '../../types';
 
 export interface ArrangerConfig {
   /** Enable bass enhancement */
@@ -90,7 +89,7 @@ export class GameBoyArranger {
    */
   arrange(
     notes: ChannelNote[],
-    assignments: ChannelAssignment[],
+    _assignments: ChannelAssignment[],
     duration: number
   ): ArrangementResult {
     const originalCount = notes.length;
@@ -197,7 +196,7 @@ export class GameBoyArranger {
    * Enhance bass to be more rhythmically active.
    * GB bass doesn't just play root notes - it has rhythmic variation.
    */
-  private enhanceBass(notes: ChannelNote[], duration: number): ChannelNote[] {
+  private enhanceBass(notes: ChannelNote[], _duration: number): ChannelNote[] {
     if (notes.length === 0) return notes;
     
     const enhanced: ChannelNote[] = [];

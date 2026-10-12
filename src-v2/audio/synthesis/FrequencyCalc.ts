@@ -11,7 +11,7 @@
 /**
  * GB CPU clock rate used for audio timing
  */
-const GB_CLOCK = 4194304; // 4.194304 MHz
+ // 4.194304 MHz
 
 /**
  * Pulse channel base frequency divider

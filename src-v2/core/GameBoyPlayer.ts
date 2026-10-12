@@ -11,7 +11,7 @@ import { GameBoyAPU } from '../audio/apu/APU';
 import { ChannelMapper } from '../audio/midi/ChannelMapper';
 import { Arpeggiator } from '../audio/midi/Arpeggiator';
 import { GameBoyArranger, type ArrangerConfig } from '../audio/arranger/GameBoyArranger';
-import type { MIDITrack, MIDINote } from '../audio/midi/TrackAnalyzer';
+import type { MIDITrack } from '../audio/midi/TrackAnalyzer';
 import type { 
   ChannelNote, 
   ChannelAssignment, 
@@ -65,9 +65,9 @@ export class GameBoyPlayer {
   private readonly SCHEDULE_AHEAD_TIME = 2.0; // Schedule 2 seconds ahead
   private readonly SCHEDULER_INTERVAL_MS = 250; // Check every 250ms
   
-  constructor(config: Partial<GameBoyPlayerConfig> = {}) {
+  constructor(config: Partial<GameBoyPlayerConfig> = {}, audioContext?: AudioContext) {
     this.config = { ...DEFAULT_PLAYER_CONFIG, ...config };
-    this.apu = new GameBoyAPU(undefined, this.config);
+    this.apu = new GameBoyAPU(audioContext, this.config);
     this.mapper = new ChannelMapper();
     this.arpeggiator = new Arpeggiator({ bpm: this.config.defaultBPM });
     this.arranger = new GameBoyArranger(this.config.arrangerConfig);
@@ -223,7 +223,7 @@ export class GameBoyPlayer {
    * Convert tonejs/midi tracks to our format.
    */
   private convertMIDITracks(midi: InstanceType<typeof Midi>): MIDITrack[] {
-    return midi.tracks.map((track, index) => ({
+    return midi.tracks.map((track) => ({
       channel: track.channel,
       name: track.name,
       notes: track.notes.map(note => ({

@@ -219,7 +219,6 @@ export function generateLeadWave(): Uint8Array {
   
   for (let i = 0; i < WAVE_TABLE_SIZE; i++) {
     const position = i / WAVE_TABLE_SIZE;
-    const angle = position * Math.PI * 2;
     
     // Mix of saw and triangle characteristics
     const saw = position;

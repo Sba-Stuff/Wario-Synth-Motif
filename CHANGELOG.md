@@ -4,6 +4,15 @@ All notable changes to [Wario Synth](https://www.wario.style/) are documented he
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.0] - 2026-10-12
+
+### Changed
+- Unified Wario Synth at `/`: Game Boy synthesis with the existing search, local upload, original MIDI preview, and player interface.
+- Replaced the engine tabs and Generate step with “Play 8-bit version”.
+- New shares open the unified player. `/v2` and `/v2.html` preserve query parameters when redirecting; existing `/play`, short links, and embeds retain their original engine.
+- Audio downloads are explicitly labelled as up-to-30-second WAV clips. MIDI export has been removed from the main page.
+- Main production typechecking now covers the imported Game Boy engine.
+
 ## [1.7.1] - 2026-06-17
 
 ### Fixed
@@ -84,3 +93,5 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 [1.6.0]: https://github.com/b1rdmania/motif/releases/tag/v1.6.0
 [1.5.0]: https://github.com/b1rdmania/motif/compare/v1.5.0...v1.6.0
 [1.4.0]: https://github.com/b1rdmania/motif/compare/v1.4.0...v1.5.0
+
+[2.0.0]: https://github.com/b1rdmania/motif/releases/tag/v2.0.0

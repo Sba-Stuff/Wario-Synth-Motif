@@ -34,10 +34,10 @@ Zero samples. Zero server audio. Just raw oscillators having the time of their l
 - **Local MIDI upload** — load your own `.mid` / `.midi` files (client-side only)
 - **Browser playback** with soundfont piano preview
 - **Wario Synthesis Engine**: procedural Game Boy-style synthesis from parsed MIDI structure
-- **Save Audio (WAV) and Save MIDI** — export the generated result after playback
+- **Save 30s WAV** — download an audio clip after playback
 - **Share links** with dynamic social previews — works for searched MIDI sources; not available for local uploads
 - **Works on mobile** (iOS audio unlock included)
-- **v2 beta engine** (`/v2.html`, or the "v2 beta" tab): an experimental engine that targets the real Game Boy chip (Sharp LR35902) with a 15-bit LFSR noise channel, proper pulse duty cycles, and custom wavetables. The synthesis is authentic; arranging arbitrary MIDI onto 4-8 fixed voices is the open problem — see [issue #5](https://github.com/b1rdmania/motif/issues/5)
+- **Unified Game Boy engine**: the main page uses pulse, wave and noise synthesis, with MIDI upload, original preview, sharing and 30-second WAV clips. Old `/v2` links redirect to the main player; existing share pages and embeds keep their original playback.
 
 See [CHANGELOG.md](./CHANGELOG.md) for release history.
 

@@ -6,7 +6,7 @@
 
 import type { DutyIndex } from '../audio/synthesis/DutyCycle';
 import type { LFSRMode } from '../audio/synthesis/LFSR';
-import type { WavePreset, WaveVolume } from '../audio/synthesis/WaveTable';
+import type { WavePreset } from '../audio/synthesis/WaveTable';
 
 /**
  * Channel identifiers for the 8-channel "Super Game Boy" setup

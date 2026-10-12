@@ -21,8 +21,7 @@ export default defineConfig({
         models: resolve(__dirname, 'models.html'),
         // Share link landing page
         play: resolve(__dirname, 'play.html'),
-        // V2 authentic Game Boy engine (experimental, unlinked from the main
-        // app — shipped so people can try it from the open issue).
+        // Compatibility redirect for existing V2 links.
         v2: resolve(__dirname, 'v2.html'),
         // SEO landing pages
         midi_to_8_bit: resolve(__dirname, 'midi-to-8-bit.html'),

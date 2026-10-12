@@ -14,7 +14,6 @@ import type {
   PulseChannelId,
   WaveChannelId,
   NoiseChannelId,
-  TrackRole
 } from '../../types';
 import type { DutyIndex } from '../synthesis/DutyCycle';
 import type { WavePreset } from '../synthesis/WaveTable';
