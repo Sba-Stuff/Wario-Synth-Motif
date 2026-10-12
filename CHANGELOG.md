@@ -4,6 +4,12 @@ All notable changes to [Wario Synth](https://www.wario.style/) are documented he
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+- Hosting moved from Vercel to Cloudflare Workers. Short share links moved from Redis to Workers KV. The MIDI proxy now checks every redirect hop against the SSRF rules.
+- `.html` page URLs and `/v2` now permanently redirect (301) to their clean URLs. `/v2` is removed from the sitemap.
+
 ## [2.0.0] - 2026-10-12
 
 ### Changed
