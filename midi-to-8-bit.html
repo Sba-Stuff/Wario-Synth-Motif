@@ -3,76 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIDI to 8-Bit Converter — Free, Online, In Your Browser | Wario Synth</title>
-    <meta name="description" content="Convert any MIDI file to 8-bit Game Boy chiptune. Upload a .mid, hear it instantly, save as WAV or MIDI. Free, no signup, runs in your browser.">
+    <title>MIDI to 8-Bit Converter — Free Online | Wario Synth</title>
+    <meta name="description" content="Convert MIDI to 8-bit chiptune in your browser. Upload a .mid file, play the Game Boy-style version and save a 30-second WAV clip. Free, no account.">
     <link rel="canonical" href="https://www.wario.style/midi-to-8-bit">
     <link rel="icon" type="image/png" href="/wario-sprite.png">
     <meta name="theme-color" content="#0b0b0b">
-    <meta property="og:title" content="MIDI to 8-Bit Converter — Free, Online, In Your Browser | Wario Synth">
-    <meta property="og:description" content="Convert any MIDI file to 8-bit Game Boy chiptune. Upload a .mid, hear it instantly, save as WAV or MIDI. Free, no signup, runs in your browser.">
+    <meta property="og:title" content="MIDI to 8-Bit Converter — Free Online | Wario Synth">
+    <meta property="og:description" content="Convert MIDI to 8-bit chiptune in your browser. Upload a .mid file, play the Game Boy-style version and save a 30-second WAV clip. Free, no account.">
     <meta property="og:image" content="https://www.wario.style/warioX.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Wario Synth">
     <meta property="og:url" content="https://www.wario.style/midi-to-8-bit">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MIDI to 8-Bit Converter — Free, Online, In Your Browser | Wario Synth">
-    <meta name="twitter:description" content="Convert any MIDI file to 8-bit Game Boy chiptune. Upload a .mid, hear it instantly, save as WAV or MIDI. Free, no signup, runs in your browser.">
+    <meta name="twitter:title" content="MIDI to 8-Bit Converter — Free Online | Wario Synth">
+    <meta name="twitter:description" content="Convert MIDI to 8-bit chiptune in your browser. Upload a .mid file, play the Game Boy-style version and save a 30-second WAV clip. Free, no account.">
     <meta name="twitter:image" content="https://www.wario.style/warioX.png">
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [{"@type":"Question","name":"Is it really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. No account, no upload limit, no watermark. It's a hobby project."}},{"@type":"Question","name":"Does my MIDI get uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. The file is read in your browser and never leaves it. Only the shareable song search uses the network."}},{"@type":"Question","name":"What formats come out?","acceptedAnswer":{"@type":"Answer","text":"WAV audio and a re-arranged .mid file mapped to the four Game Boy channels."}},{"@type":"Question","name":"Can I convert MP3 to 8-bit?","acceptedAnswer":{"@type":"Answer","text":"Not directly. It needs note data, so start from a MIDI. Search the song name and Wario Synth finds a MIDI for you."}}]
-    }
-    </script>
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Can I convert MP3 or WAV?", "acceptedAnswer": {"@type": "Answer", "text": "No. The converter needs MIDI note data. Search for a MIDI of the song, or export one from your music software."}}, {"@type": "Question", "name": "Can I save the whole song?", "acceptedAnswer": {"@type": "Answer", "text": "Playback runs through the song. WAV downloads contain up to the first 30 seconds, plus a short release tail. MIDI export is not available."}}, {"@type": "Question", "name": "Is it free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. No account is needed."}}]}
+</script>
     <link rel="stylesheet" href="/src/styles/wario.css" />
     <link rel="stylesheet" href="/src/styles/landing.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="hero">
-            <div class="hero-top">
-                <h1>MIDI TO 8-BIT</h1>
-                <a class="faq-link" href="/">Open Wario Synth</a>
-            </div>
-            <p class="tagline">Upload a .mid. Get the Game Boy version. Save as WAV or MIDI.</p>
-        </div>
-
-        <div class="landing-cta">
-            <a href="/">Convert a MIDI now</a>
-        </div>
-
-        <div class="landing-section">
-            <h2>What it does</h2>
-            <p>Wario Synth is a <strong>free online MIDI to 8-bit converter</strong>. Drop in a .mid or .midi file and the engine re-plays it through a synthesised Game Boy sound chip: two pulse channels, one wavetable channel, one noise channel. Nothing is uploaded — the conversion runs entirely in your browser with Web Audio.</p>
-            <p>You get an authentic 8-bit sound, not a bit-crushed MP3. Melody, bass, chords and drums are detected in the MIDI and mapped to the channels the real hardware had.</p>
-        </div>
-        <div class="landing-section">
-            <h2>How to convert MIDI to 8-bit</h2>
-            <ol><li>Open <a href="/">Wario Synth</a> and pick <strong>Upload MIDI</strong>. Or type a song name and let it find a MIDI for you.</li><li>Hit <strong>Generate</strong>. Playback starts in a couple of seconds.</li><li>Press <strong>Save Audio</strong> for a WAV, or <strong>Save MIDI</strong> for the 4-channel Game Boy arrangement.</li></ol>
-            <p>Dense files with many tracks work — the engine keeps the lead line and thins the rest to fit four voices. If a result sounds off, try another MIDI source: some are transcribed better than others.</p>
-        </div>
-        <div class="landing-section">
-            <h2>Two engines</h2>
-            <p><strong>v1</strong> is the default: clean, punchy, forgiving of messy MIDI. <strong>v2 beta</strong> targets the real DMG chip more strictly — 15-bit LFSR noise, duty-cycle pulses, 4-bit wavetables. Switch tabs at the top of the app to compare.</p>
-        </div>
-        <div class="landing-section">
-            <h2>FAQ</h2>
-            <p><strong>Is it really free?</strong><br>Yes. No account, no upload limit, no watermark. It's a hobby project.</p>
-            <p><strong>Does my MIDI get uploaded?</strong><br>No. The file is read in your browser and never leaves it. Only the shareable song search uses the network.</p>
-            <p><strong>What formats come out?</strong><br>WAV audio and a re-arranged .mid file mapped to the four Game Boy channels.</p>
-            <p><strong>Can I convert MP3 to 8-bit?</strong><br>Not directly. It needs note data, so start from a MIDI. Search the song name and Wario Synth finds a MIDI for you.</p>
-        </div>
-
-        <div class="landing-section">
-            <h2>More</h2>
-            <div class="landing-links">
-                <a href="/8-bit-synth-online">8-bit synth online<span>The Game Boy sound engine, in a tab</span></a>
-                <a href="/wario-8-bit-music">Wario music in 8-bit<span>WarioWare and Wario Land themes, ready to play</span></a>
-                <a href="/v2">v2 beta<span>Stricter DMG chip emulation</span></a>
-            </div>
-        </div>
-
+    <main class="container">
+        <div class="hero"><div class="hero-top"><h1>MIDI TO 8-BIT</h1><a class="faq-link" href="/">Open Wario Synth</a></div><p class="tagline">Upload a MIDI. Hear it in 8-bit. Save a WAV clip.</p></div>
+        <div class="landing-cta"><a href="/">Convert a MIDI</a></div>
+        <section class="landing-section"><h2>How to convert MIDI to 8-bit</h2><ol><li>Open <a href="/">Wario Synth</a> and choose <strong>Upload MIDI</strong>. Select a .mid or .midi file up to 10 MB.</li><li>Press <strong>Play 8-bit version</strong>. Use <strong>Preview original MIDI</strong> to compare.</li><li>Choose <strong>Save 30s WAV</strong> to download up to 30 seconds from the start.</li></ol><p>No file handy? Search for a song and choose a MIDI source instead. Local files are processed in your browser.</p></section>
+        <section class="landing-section"><h2>Convert MIDI to chiptune</h2><p>MIDI holds notes and timing. Wario Synth reads those parts and plays them with pulse, wave and noise sounds. Higher parts can become a lead, lower parts a bass line, and percussion uses noise. Chords may become quick arpeggios.</p><p>The result depends on the transcription. If the melody gets lost, try another MIDI source or a simpler arrangement.</p></section>
+        <section class="landing-section"><h2>FAQ</h2><p><strong>Can I convert MP3 or WAV?</strong><br>No. The converter needs MIDI note data. Search for a MIDI of the song, or export one from your music software.</p><p><strong>Can I save the whole song?</strong><br>Playback runs through the song. WAV downloads contain up to the first 30 seconds, plus a short release tail. MIDI export is not available.</p><p><strong>Is it free?</strong><br>Yes. No account is needed.</p></section>
+        <nav class="landing-section" aria-label="More about Wario Synth"><h2>More</h2><div class="landing-links"><a href="/8-bit-synth-online">8-bit synth online</a><a href="/gameboy-music-maker">Game Boy music maker</a></div></nav>
         <div class="footer" style="margin-top: 18px; font-size: 8px; color: var(--gb-medium); text-align: center; gap: 10px;">
             <a href="/" style="color: var(--gb-dark);">Wario Synth</a>
             <span style="opacity: 0.75;">·</span>
@@ -80,6 +39,6 @@
             <span style="opacity: 0.75;">·</span>
             <span>Built by <a href="https://github.com/b1rdmania" target="_blank" rel="noopener noreferrer" style="color: var(--gb-dark);">b1rdmania</a></span>
         </div>
-    </div>
+    </main>
 </body>
 </html>

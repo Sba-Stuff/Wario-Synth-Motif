@@ -3,77 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8-Bit Synth Online — Free Game Boy Synthesizer in Your Browser | Wario Synth</title>
-    <meta name="description" content="An online 8-bit synthesizer modelled on the Game Boy sound chip: 2 pulse channels, wavetable, noise. Feed it any song. Free, no install.">
+    <title>8-Bit Synth Online — Game Boy-Style Sound | Wario Synth</title>
+    <meta name="description" content="Play MIDI files through a free online 8-bit synth. Hear pulse, wave and noise sounds, preview the original and download a 30-second WAV clip.">
     <link rel="canonical" href="https://www.wario.style/8-bit-synth-online">
     <link rel="icon" type="image/png" href="/wario-sprite.png">
     <meta name="theme-color" content="#0b0b0b">
-    <meta property="og:title" content="8-Bit Synth Online — Free Game Boy Synthesizer in Your Browser | Wario Synth">
-    <meta property="og:description" content="An online 8-bit synthesizer modelled on the Game Boy sound chip: 2 pulse channels, wavetable, noise. Feed it any song. Free, no install.">
+    <meta property="og:title" content="8-Bit Synth Online — Game Boy-Style Sound | Wario Synth">
+    <meta property="og:description" content="Play MIDI files through a free online 8-bit synth. Hear pulse, wave and noise sounds, preview the original and download a 30-second WAV clip.">
     <meta property="og:image" content="https://www.wario.style/warioX.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Wario Synth">
     <meta property="og:url" content="https://www.wario.style/8-bit-synth-online">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="8-Bit Synth Online — Free Game Boy Synthesizer in Your Browser | Wario Synth">
-    <meta name="twitter:description" content="An online 8-bit synthesizer modelled on the Game Boy sound chip: 2 pulse channels, wavetable, noise. Feed it any song. Free, no install.">
+    <meta name="twitter:title" content="8-Bit Synth Online — Game Boy-Style Sound | Wario Synth">
+    <meta name="twitter:description" content="Play MIDI files through a free online 8-bit synth. Hear pulse, wave and noise sounds, preview the original and download a 30-second WAV clip.">
     <meta name="twitter:image" content="https://www.wario.style/warioX.png">
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [{"@type":"Question","name":"Is this a real Game Boy emulator?","acceptedAnswer":{"@type":"Answer","text":"No. It's a synthesiser modelled on the Game Boy's sound chip, running on Web Audio. v2 beta gets closest to the hardware."}},{"@type":"Question","name":"Can I play it live with a keyboard?","acceptedAnswer":{"@type":"Answer","text":"Not yet. It plays MIDI files — search a song or upload your own."}},{"@type":"Question","name":"Does it work on phones?","acceptedAnswer":{"@type":"Answer","text":"Yes, including iPhone. Turn silent mode off and tap Enable Audio if it's quiet."}},{"@type":"Question","name":"Can I download what it makes?","acceptedAnswer":{"@type":"Answer","text":"Yes: WAV audio or a Game Boy-arranged MIDI, both from the app."}}]
-    }
-    </script>
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Can I play it with a MIDI keyboard?", "acceptedAnswer": {"@type": "Answer", "text": "No. This synth plays MIDI files; it has no live keyboard input or note editor."}}, {"@type": "Question", "name": "Is it a Game Boy emulator?", "acceptedAnswer": {"@type": "Answer", "text": "No. It uses browser audio synthesis inspired by the Game Boy sound chip. It does not run Game Boy software."}}, {"@type": "Question", "name": "Can I share the result?", "acceptedAnswer": {"@type": "Answer", "text": "Songs found through search can be shared by link. Uploaded MIDI files stay on your device; you can download a WAV clip instead."}}]}
+</script>
     <link rel="stylesheet" href="/src/styles/wario.css" />
     <link rel="stylesheet" href="/src/styles/landing.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="hero">
-            <div class="hero-top">
-                <h1>8-BIT SYNTH ONLINE</h1>
-                <a class="faq-link" href="/">Open Wario Synth</a>
-            </div>
-            <p class="tagline">A Game Boy sound chip in a browser tab. Feed it any song.</p>
-        </div>
-
-        <div class="landing-cta">
-            <a href="/">Open the synth</a>
-        </div>
-
-        <div class="landing-section">
-            <h2>What's inside</h2>
-            <p>Wario Synth is a <strong>free online 8-bit synthesizer</strong>. Under the hood is a software model of the Game Boy's four-channel APU:</p>
-            <ul><li><strong>Pulse 1 &amp; 2</strong> — square waves with 12.5 / 25 / 50 / 75 % duty cycles. Melody and harmony.</li><li><strong>Wave</strong> — a 32-step 4-bit wavetable. Bass and pads.</li><li><strong>Noise</strong> — a 15-bit LFSR. Drums and hats.</li></ul>
-            <p>Give it a MIDI and it decides which part goes to which channel, then renders the lot with Web Audio oscillators. No plugin, no download, no account.</p>
-        </div>
-        <div class="landing-section">
-            <h2>v1 vs v2 beta</h2>
-            <p><strong>v1</strong> is tuned to sound good on anything — it takes liberties with the hardware to keep melodies clear. <strong>v2 beta</strong> is the purist's engine: strict duty cycles, real wavetables, hardware-accurate noise. Same MIDI, two flavours. Both are in the app.</p>
-        </div>
-        <div class="landing-section">
-            <h2>What to do with it</h2>
-            <p>Search a song title and Wario Synth finds a MIDI online, or upload your own. Generate, listen, then <strong>Save Audio</strong> (WAV) or <strong>Save MIDI</strong>. Share links carry the song so friends hear the same version.</p>
-            <p>Handy for game jams, ringtones, demo-scene sketches, or just hearing what your favourite track sounds like on a 1989 handheld.</p>
-        </div>
-        <div class="landing-section">
-            <h2>FAQ</h2>
-            <p><strong>Is this a real Game Boy emulator?</strong><br>No. It's a synthesiser modelled on the Game Boy's sound chip, running on Web Audio. v2 beta gets closest to the hardware.</p>
-            <p><strong>Can I play it live with a keyboard?</strong><br>Not yet. It plays MIDI files — search a song or upload your own.</p>
-            <p><strong>Does it work on phones?</strong><br>Yes, including iPhone. Turn silent mode off and tap Enable Audio if it's quiet.</p>
-            <p><strong>Can I download what it makes?</strong><br>Yes: WAV audio or a Game Boy-arranged MIDI, both from the app.</p>
-        </div>
-
-        <div class="landing-section">
-            <h2>More</h2>
-            <div class="landing-links">
-                <a href="/midi-to-8-bit">MIDI to 8-bit converter<span>Upload a .mid, save WAV or MIDI</span></a>
-                <a href="/wario-8-bit-music">Wario music in 8-bit<span>WarioWare and Wario Land themes</span></a>
-                <a href="/v2">v2 beta<span>Stricter DMG chip emulation</span></a>
-            </div>
-        </div>
-
+    <main class="container">
+        <div class="hero"><div class="hero-top"><h1>8-BIT SYNTH ONLINE</h1><a class="faq-link" href="/">Open Wario Synth</a></div><p class="tagline">Hear your MIDI through a Game Boy-inspired synth.</p></div>
+        <div class="landing-cta"><a href="/">Open the synth</a></div>
+        <section class="landing-section"><h2>What makes the sound</h2><p>Wario Synth plays MIDI files with three kinds of sound:</p><ul><li><strong>Pulse:</strong> bright, buzzy tones for leads and harmony.</li><li><strong>Wave:</strong> wavetable tones for bass and other pitched parts.</li><li><strong>Noise:</strong> short bursts for drums and percussion.</li></ul><p>The engine maps the MIDI tracks to these sounds in your browser. It takes inspiration from the Game Boy, with extra voices for fuller arrangements.</p></section>
+        <section class="landing-section"><h2>Try it with a song</h2><p>Search for a song or upload a MIDI, then press <strong>Play 8-bit version</strong>. Compare it with <strong>Preview original MIDI</strong>, pause or seek through the result, and download a clip with <strong>Save 30s WAV</strong>.</p></section>
+        <section class="landing-section"><h2>FAQ</h2><p><strong>Can I play it with a MIDI keyboard?</strong><br>No. This synth plays MIDI files; it has no live keyboard input or note editor.</p><p><strong>Is it a Game Boy emulator?</strong><br>No. It uses browser audio synthesis inspired by the Game Boy sound chip. It does not run Game Boy software.</p><p><strong>Can I share the result?</strong><br>Songs found through search can be shared by link. Uploaded MIDI files stay on your device; you can download a WAV clip instead.</p></section>
+        <nav class="landing-section" aria-label="More about Wario Synth"><h2>More</h2><div class="landing-links"><a href="/midi-to-8-bit">MIDI to 8-bit converter</a><a href="/gameboy-music-maker">Game Boy music maker</a></div></nav>
         <div class="footer" style="margin-top: 18px; font-size: 8px; color: var(--gb-medium); text-align: center; gap: 10px;">
             <a href="/" style="color: var(--gb-dark);">Wario Synth</a>
             <span style="opacity: 0.75;">·</span>
@@ -81,6 +39,6 @@
             <span style="opacity: 0.75;">·</span>
             <span>Built by <a href="https://github.com/b1rdmania" target="_blank" rel="noopener noreferrer" style="color: var(--gb-dark);">b1rdmania</a></span>
         </div>
-    </div>
+    </main>
 </body>
 </html>

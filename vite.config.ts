@@ -25,6 +25,7 @@ export default defineConfig({
         // Compatibility redirect for existing V2 links.
         v2: resolve(__dirname, 'v2.html'),
         // SEO landing pages
+        gameboy_maker: resolve(__dirname, 'gameboy-music-maker.html'),
         midi_to_8_bit: resolve(__dirname, 'midi-to-8-bit.html'),
         synth_online: resolve(__dirname, '8-bit-synth-online.html'),
         wario_8_bit: resolve(__dirname, 'wario-8-bit-music.html'),

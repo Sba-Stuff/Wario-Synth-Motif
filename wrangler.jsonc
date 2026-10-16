@@ -15,7 +15,7 @@
     "run_worker_first": [
       "/api/*", "/s/*", "/health", "/v2", "/v2/",
       "/v2.html", "/index.html", "/embed.html", "/play.html", "/models.html",
-      "/midi-to-8-bit.html", "/8-bit-synth-online.html", "/wario-8-bit-music.html"
+      "/gameboy-music-maker.html", "/midi-to-8-bit.html", "/8-bit-synth-online.html", "/wario-8-bit-music.html"
     ]
   },
   "kv_namespaces": [

@@ -10,6 +10,12 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Hosting moved from Vercel to Cloudflare Workers. Short share links moved from Redis to Workers KV. The MIDI proxy now checks every redirect hop against the SSRF rules.
 - `.html` page URLs and `/v2` now permanently redirect (301) to their clean URLs. `/v2` is removed from the sitemap.
 
+## [Unreleased]
+
+### Changed
+- Updated MIDI converter and online synth pages for the current player and 30-second WAV exports.
+- Added a Game Boy music-maker guide, internal links and sitemap entry.
+
 ## [2.0.0] - 2026-10-12
 
 ### Changed
